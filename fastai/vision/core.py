@@ -227,10 +227,15 @@ def encodes(self, o:PILMask): return o._tensor_cls(image2tensor(o)[0])
 # Cell
 def _scale_pnts(y, sz, do_scale=True, y_first=False):
     if y_first: y = y.flip(1)
+    print("in _scale_pnts: y", y, " sz", sz)
     res = y * 2/tensor(sz).float() - 1 if do_scale else y
     return TensorPoint(res, img_size=sz)
 
-def _unscale_pnts(y, sz): return TensorPoint((y+1) * tensor(sz).float()/2, img_size=sz)
+def _unscale_pnts(y, sz): 
+    print("in _unscale_pnts: y", y, " sz", sz)
+    out = TensorPoint((y+1) * tensor(sz).float()/2, img_size=sz)
+    print("in _unscale_pnts out", out)
+    return out
 
 # Cell
 class PointScaler(Transform):
@@ -244,6 +249,7 @@ class PointScaler(Transform):
     def _get_sz(self, x):
         sz = x.get_meta('img_size')
         assert sz is not None or self.sz is not None, "Size could not be inferred, pass it in the init of your TensorPoint with `img_size=...`"
+        print("in _get_sz self.sz ", self.sz, " sz", sz)
         return sz if self.sz is None else self.sz
 
     def setups(self, dl):
