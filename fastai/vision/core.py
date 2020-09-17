@@ -229,7 +229,9 @@ def _scale_pnts(y, sz, do_scale=True, y_first=False):
     if y_first: y = y.flip(1)
     print("in _scale_pnts: y", y, " sz", sz)
     res = y * 2/tensor(sz).float() - 1 if do_scale else y
-    return TensorPoint(res, img_size=sz)
+    out = TensorPoint(res, img_size=sz)
+    print("In _scale_pnts out", out)
+    return out
 
 def _unscale_pnts(y, sz): 
     print("in _unscale_pnts: y", y, " sz", sz)
